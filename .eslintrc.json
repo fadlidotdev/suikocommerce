@@ -1,3 +1,22 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": [
+   "prefer-arrow",
+   "@tanstack/query"
+  ],
+  "rules": {
+    "no-unused-vars": "error",
+    "no-nested-ternary": "error",
+    "no-console": "warn",
+    "prefer-arrow/prefer-arrow-functions": [
+      "warn",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ],
+    "@tanstack/query/exhaustive-deps": "error",
+    "@tanstack/query/prefer-query-object-syntax": "error"
+  }
 }
