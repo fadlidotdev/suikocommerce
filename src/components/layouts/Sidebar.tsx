@@ -5,7 +5,7 @@ import {useDebounce} from "@/hooks";
 import {classes} from "@/utils/core";
 import {routes} from "@/utils/routes";
 
-import {Logo} from "../common";
+import {Button, Logo} from "../common";
 import NavItem from "./NavItem";
 import {useEffect, useRef} from "react";
 import useWindowSize from "@/hooks/useWindowSize";
@@ -16,7 +16,8 @@ type Props = {
 };
 
 const Sidebar = ({show, onToggle}: Props) => {
-  const {pathname} = useRouter();
+  const router = useRouter();
+  const {pathname} = router;
 
   const delayedShowSidebar = useDebounce(show, 100);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -32,6 +33,10 @@ const Sidebar = ({show, onToggle}: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [width, show],
   );
+
+  const onLogout = () => {
+    router.push(routes("dashboard/login"));
+  };
 
   return (
     <>
@@ -83,12 +88,15 @@ const Sidebar = ({show, onToggle}: Props) => {
         </nav>
 
         <div className="mt-auto">
-          <button className="hidden w-full px-5 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:block focus:outline-none hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-200 ">
+          <Button
+            className="hidden w-full md:block"
+            variant="alternate"
+            onClick={onLogout}>
             Log out
-          </button>
+          </Button>
 
           <div className="block md:hidden">
-            <button className="block mx-auto opacity-70">
+            <button className="block mx-auto opacity-70" onClick={onLogout}>
               <Image
                 src="/icons/logout.svg"
                 width={20}

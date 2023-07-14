@@ -1,3 +1,4 @@
+import {Button} from "@/components/common";
 import Image from "next/image";
 import Router from "next/router";
 import {ChangeEvent} from "react";
@@ -62,11 +63,7 @@ const LoginPage = () => {
             </div>
 
             <div className="mt-2 place-self-end">
-              <button
-                type="submit"
-                className="px-5 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300">
-                Log In
-              </button>
+              <Button>Log in</Button>
             </div>
           </div>
         </form>
