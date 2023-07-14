@@ -1,4 +1,5 @@
 import {Logo} from "@/components/common";
+import {withMeta} from "@/components/common/Meta/Meta";
 
 const DashboardPage = () => {
   return (
@@ -15,4 +16,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default withMeta(DashboardPage);
