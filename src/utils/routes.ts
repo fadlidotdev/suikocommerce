@@ -19,5 +19,5 @@ const routesBuilder = (name: Route, id: string | number) => {
 export const routes = (route: Route, id?: string | number) => {
   if (id) return routesBuilder(route, id);
 
-  return route.concat("/");
+  return "/".concat(route);
 };

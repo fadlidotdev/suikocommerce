@@ -3,7 +3,7 @@ import {withMeta} from "@/components/common/Meta/Meta";
 
 const DashboardPage = () => {
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="absolute inset-0 flex items-center justify-center">
       <div className="flex flex-col gap-3 text-center md:flex-row">
         <Logo width={100} height={100} className="opacity-60" />
 

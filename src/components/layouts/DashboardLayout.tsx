@@ -26,9 +26,13 @@ const DashboardLayout = ({children}: Props) => {
 
       {/* DASHBOARD CONTENT */}
       <main className="w-full bg-white">
-        <div className="relative min-h-screen p-4 pr-0 bg-gray-100 md:bg-white md:p-8">
-          <div className="absolute top-0 bottom-0 right-0 p-2 overflow-auto bg-gray-100 rounded-none md:p-8 left-2.5 md:rounded-2xl md:inset-8">
-            <div className="h-full">{children}</div>
+        <div className="relative min-h-screen p-4 pr-0 bg-gray-100 md:bg-white">
+          <div
+            className={classes(
+              "absolute top-0 bottom-0 right-0 overflow-auto bg-gray-100 rounded-none md:rounded-2xl md:inset-8",
+              showSidebar ? "left-2.5" : "left-0",
+            )}>
+            <div className="relative min-h-full">{children}</div>
           </div>
         </div>
       </main>
@@ -50,28 +54,32 @@ export const DashboardHeader = ({
   const onBack = () => Router.back();
 
   return (
-    <header className="flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <Show when={hasBack}>
-          <button onClick={onBack}>
-            <Image
-              src="/icons/arrow-left.svg"
-              width={24}
-              height={24}
-              alt="Back"
-            />
-          </button>
-        </Show>
+    <>
+      <header className="sticky top-0 z-30 flex items-center justify-between w-full px-6 py-5 bg-gray-100">
+        <div className="flex items-center gap-2">
+          <Show when={hasBack}>
+            <button onClick={onBack}>
+              <Image
+                src="/icons/arrow-left.svg"
+                width={24}
+                height={24}
+                alt="Back"
+              />
+            </button>
+          </Show>
 
-        {typeof title === "string" ? (
-          <h1 className="text-2xl font-bold">{title}</h1>
-        ) : (
-          title
-        )}
-      </div>
+          {typeof title === "string" ? (
+            <h1 className="text-2xl font-bold">{title}</h1>
+          ) : (
+            title
+          )}
+        </div>
 
-      {rightContent}
-    </header>
+        {rightContent}
+      </header>
+
+      {/* Mobile Header Spacer */}
+    </>
   );
 };
 
@@ -80,7 +88,7 @@ type DashboardContentProps = {
 };
 
 export const DashboardContent = ({children}: DashboardContentProps) => {
-  return <div className="h-full pt-8 pb-4 overflow-auto">{children}</div>;
+  return <div className="px-8 pb-8">{children}</div>;
 };
 
 export default DashboardLayout;

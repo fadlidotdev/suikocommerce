@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {useMemo, useState} from "react";
 
 import {Button, Pagination, TD, TH, TR, Table} from "@/components/common";
@@ -6,7 +7,6 @@ import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
-import Link from "next/link";
 import {routes} from "@/utils/routes";
 
 const dummyData = [
@@ -202,7 +202,7 @@ const ProductsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const columns = useMemo(
-    () => ["Product Name", "Brand", "Category", "Price", "Stock", "Action"],
+    () => ["Name", "Brand", "Category", "Price", "Stock", "Action"],
     [],
   );
 

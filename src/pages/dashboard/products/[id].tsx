@@ -3,8 +3,7 @@ import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
-import Image from "next/image";
-import React from "react";
+import {ImageGallery} from "@/components/shared";
 
 const ProductDetailPage = () => {
   return (
@@ -13,16 +12,8 @@ const ProductDetailPage = () => {
 
       <DashboardHeader title="Microsoft Surface Laptop 4" hasBack />
       <DashboardContent>
-        <div className="gap-8 space-y-8 md:flex">
-          <Image
-            className="object-contain bg-white rounded-lg shadow aspect-square place-self-start"
-            src="https://i.dummyjson.com/data/products/8/thumbnail.jpg"
-            width={250}
-            height={250}
-            alt="Product image"
-          />
-
-          <form className="w-full max-w-lg space-y-4">
+        <div className="md:flex md:gap-8">
+          <form className="w-full max-w-lg mb-4 space-y-4">
             <div className="space-y-1">
               <label htmlFor="name" className="block mb-2 text-sm font-medium">
                 Name
@@ -90,6 +81,17 @@ const ProductDetailPage = () => {
               />
             </div>
           </form>
+
+          <ImageGallery
+            thumbnail="https://i.dummyjson.com/data/products/8/thumbnail.jpg"
+            images={[
+              "https://i.dummyjson.com/data/products/8/1.jpg",
+              "https://i.dummyjson.com/data/products/8/2.jpg",
+              "https://i.dummyjson.com/data/products/8/3.jpg",
+              "https://i.dummyjson.com/data/products/8/4.jpg",
+              "https://i.dummyjson.com/data/products/8/thumbnail.jpg",
+            ]}
+          />
         </div>
       </DashboardContent>
     </>

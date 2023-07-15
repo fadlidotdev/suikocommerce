@@ -112,7 +112,7 @@ const Sidebar = ({show, onToggle}: Props) => {
       <button
         onClick={onToggle}
         className={classes(
-          "fixed scale-0 left-0 z-20 flex items-center justify-center w-16 h-12 transition bg-white rounded-tl-none rounded-bl-none shadow-sm md:shadow-none rounded-tr-xl rounded-br-xl top-14",
+          "fixed scale-0 right-4 z-20 flex items-center justify-center w-16 h-16 transition bg-white rounded-full shadow-2xl bottom-4 border border-gray-100",
           !delayedShowSidebar && "scale-100",
         )}>
         <Logo className="block w-8 h-8 mx-auto" />

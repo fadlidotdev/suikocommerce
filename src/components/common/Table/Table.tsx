@@ -32,9 +32,9 @@ type Props = {
 
 const Table = ({columns, children}: Props) => {
   return (
-    <div className="relative mb-4 overflow-x-auto shadow sm:rounded-lg">
+    <div className="relative mb-4 overflow-x-auto rounded-lg shadow">
       <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-200">
           <tr>
             {columns.map((column) => (
               <th key={column} scope="col" className="px-6 py-3">
