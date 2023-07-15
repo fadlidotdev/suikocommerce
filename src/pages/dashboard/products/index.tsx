@@ -1,11 +1,13 @@
-import {useState} from "react";
+import {useMemo, useState} from "react";
 
-import {Button, Pagination} from "@/components/common";
+import {Button, Pagination, TD, TH, TR, Table} from "@/components/common";
 import {withMeta} from "@/components/common/Meta/Meta";
 import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
+import Link from "next/link";
+import {routes} from "@/utils/routes";
 
 const dummyData = [
   {
@@ -199,56 +201,33 @@ const dummyData = [
 const ProductsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
+  const columns = useMemo(
+    () => ["Product Name", "Brand", "Category", "Price", "Stock", "Action"],
+    [],
+  );
+
   return (
     <>
       <DashboardHeader title="Products" />
       <DashboardContent>
-        <div className="relative mb-4 overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Product name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Brand
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Category
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Stock
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {dummyData.map((product, idx) => (
-                <tr key={idx} className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap ">
-                    {product.title}
-                  </th>
-                  <td className="px-6 py-2">{product.brand}</td>
-                  <td className="px-6 py-2 capitalize">{product.category}</td>
-                  <td className="px-6 py-2">${product.price}</td>
-                  <td className="px-6 py-2">{product.stock}</td>
-                  <td className="px-6 py-2">
-                    <Button variant="alternate" size="small">
-                      Detail
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table columns={columns}>
+          {dummyData.map((product) => (
+            <TR key={product.id}>
+              <TH>{product.title}</TH>
+              <TD>{product.brand}</TD>
+              <TD>{product.category}</TD>
+              <TD>${product.price}</TD>
+              <TD>{product.stock}</TD>
+              <TD>
+                <Link href={routes("dashboard/products/detail", 1)}>
+                  <Button variant="alternate" size="small">
+                    Detail
+                  </Button>
+                </Link>
+              </TD>
+            </TR>
+          ))}
+        </Table>
 
         <Pagination
           currentPage={currentPage}

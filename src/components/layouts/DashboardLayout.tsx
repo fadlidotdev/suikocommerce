@@ -1,7 +1,10 @@
 import {useDisclosure} from "@/hooks";
 import {classes} from "@/utils/core";
+import Router from "next/router";
 
 import Sidebar from "./Sidebar";
+import {Show} from "../common";
+import Image from "next/image";
 
 type Props = {children: JSX.Element};
 
@@ -36,19 +39,36 @@ const DashboardLayout = ({children}: Props) => {
 type DashboardHeaderProps = {
   title: string | JSX.Element;
   rightContent?: JSX.Element;
+  hasBack?: boolean;
 };
 
 export const DashboardHeader = ({
   title,
   rightContent,
+  hasBack = false,
 }: DashboardHeaderProps) => {
+  const onBack = () => Router.back();
+
   return (
     <header className="flex items-center justify-between">
-      {typeof title === "string" ? (
-        <h1 className="text-2xl font-bold">{title}</h1>
-      ) : (
-        title
-      )}
+      <div className="flex items-center gap-2">
+        <Show when={hasBack}>
+          <button onClick={onBack}>
+            <Image
+              src="/icons/arrow-left.svg"
+              width={24}
+              height={24}
+              alt="Back"
+            />
+          </button>
+        </Show>
+
+        {typeof title === "string" ? (
+          <h1 className="text-2xl font-bold">{title}</h1>
+        ) : (
+          title
+        )}
+      </div>
 
       {rightContent}
     </header>
@@ -60,7 +80,7 @@ type DashboardContentProps = {
 };
 
 export const DashboardContent = ({children}: DashboardContentProps) => {
-  return <div className="h-full pt-4 overflow-auto">{children}</div>;
+  return <div className="h-full pt-8 pb-4 overflow-auto">{children}</div>;
 };
 
 export default DashboardLayout;
