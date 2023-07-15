@@ -115,13 +115,7 @@ const Sidebar = ({show, onToggle}: Props) => {
           "fixed scale-0 left-0 z-20 flex items-center justify-center w-16 h-12 transition bg-white rounded-tl-none rounded-bl-none shadow-sm md:shadow-none rounded-tr-xl rounded-br-xl top-14",
           !delayedShowSidebar && "scale-100",
         )}>
-        <Image
-          className="block w-8 h-8 mx-auto"
-          src="/logo.svg"
-          width={32}
-          height={32}
-          alt="Company logo"
-        />
+        <Logo className="block w-8 h-8 mx-auto" />
       </button>
     </>
   );

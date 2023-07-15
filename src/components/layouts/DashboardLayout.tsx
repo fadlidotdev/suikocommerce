@@ -33,4 +33,34 @@ const DashboardLayout = ({children}: Props) => {
   );
 };
 
+type DashboardHeaderProps = {
+  title: string | JSX.Element;
+  rightContent?: JSX.Element;
+};
+
+export const DashboardHeader = ({
+  title,
+  rightContent,
+}: DashboardHeaderProps) => {
+  return (
+    <header className="flex items-center justify-between">
+      {typeof title === "string" ? (
+        <h1 className="text-2xl font-bold">{title}</h1>
+      ) : (
+        title
+      )}
+
+      {rightContent}
+    </header>
+  );
+};
+
+type DashboardContentProps = {
+  children: JSX.Element | JSX.Element[];
+};
+
+export const DashboardContent = ({children}: DashboardContentProps) => {
+  return <div className="h-full pt-4 overflow-auto">{children}</div>;
+};
+
 export default DashboardLayout;

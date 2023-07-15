@@ -1,4 +1,4 @@
-import {Button} from "@/components/common";
+import {Button, Logo} from "@/components/common";
 import Image from "next/image";
 import Router from "next/router";
 import {ChangeEvent} from "react";
@@ -13,7 +13,7 @@ const LoginPage = () => {
   return (
     <div className="flex flex-col items-center h-screen gap-8 py-8 bg-gray-100 sm:py-0 sm:justify-center">
       <div className="opacity-60">
-        <Image src="/logo.svg" width={80} height={80} alt="Company logo" />
+        <Logo width={80} height={80} />
       </div>
 
       <div className="w-full px-8 py-6 sm:shadow-md sm:bg-white sm:rounded-lg sm:max-w-md">

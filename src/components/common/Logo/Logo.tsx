@@ -4,7 +4,7 @@ import {classes} from "@/utils/core";
 
 const Logo = ({width = 24, height = 24, className = ""}) => (
   <Image
-    className={classes("block mx-auto", className)}
+    className={classes("block mx-auto w-auto h-auto", className)}
     src="/logo.svg"
     width={width}
     height={height}
