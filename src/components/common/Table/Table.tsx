@@ -28,11 +28,16 @@ export const TD = ({children, className}: TDProps) => (
 type Props = {
   columns: string[];
   children: JSX.Element[];
+  className?: string;
 };
 
-const Table = ({columns, children}: Props) => {
+const Table = ({columns, children, className}: Props) => {
   return (
-    <div className="relative mb-4 overflow-x-auto rounded-lg shadow">
+    <div
+      className={classes(
+        "relative overflow-x-auto rounded-lg shadow",
+        className,
+      )}>
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
           <tr>

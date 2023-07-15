@@ -210,7 +210,7 @@ const ProductsPage = () => {
     <>
       <DashboardHeader title="Products" />
       <DashboardContent>
-        <Table columns={columns}>
+        <Table columns={columns} className="mb-6">
           {dummyData.map((product) => (
             <TR key={product.id}>
               <TH>{product.title}</TH>

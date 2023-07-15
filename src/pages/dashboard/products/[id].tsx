@@ -11,6 +11,7 @@ const ProductDetailPage = () => {
       <Meta title="Microsoft Surface Laptop 4" />
 
       <DashboardHeader title="Microsoft Surface Laptop 4" hasBack />
+
       <DashboardContent>
         <div className="md:flex md:gap-8">
           <form className="w-full max-w-lg mb-4 space-y-4">
