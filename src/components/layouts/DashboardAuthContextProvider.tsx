@@ -1,4 +1,4 @@
-import Router from "next/router";
+import Router, {useRouter} from "next/router";
 import {createContext, useContext, useEffect} from "react";
 
 import useLocalstorage from "@/hooks/useLocalstorage";
@@ -21,10 +21,15 @@ type Props = {
 const DashboardAuthContextProvider = ({children}: Props) => {
   const accessToken = useLocalstorage<string>(constants("accessToken"), "");
 
+  const {pathname} = useRouter();
+
   useEffect(() => {
     if (typeof accessToken === "string" && accessToken === "") {
       Router.replace(routes("dashboard/login"));
-    } else {
+      return;
+    }
+
+    if (pathname.includes(routes("dashboard/login"))) {
       Router.replace(routes("dashboard"));
     }
   }, [accessToken]);

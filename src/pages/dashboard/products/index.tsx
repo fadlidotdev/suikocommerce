@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {useMemo, useState} from "react";
 
+import {useQueryGetAllProduct} from "@/api/product";
 import {
   Button,
   ContentLoader,
@@ -17,16 +18,21 @@ import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
+import {useRouteMappingPagination, useTotalPage} from "@/hooks/core";
 import {routes} from "@/utils/routes";
-import {useQueryGetAllProduct} from "@/api/product";
-import useTotalPage from "@/hooks/useTotalPage";
+import {GetServerSideProps} from "next";
 
 const Loading = () => <ContentLoader height={500} className="mb-6" />;
 
 const LIMIT = 10;
 
-const ProductsPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+type Props = {
+  initialPage: number;
+};
+
+const ProductsPage = ({initialPage}: Props) => {
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  useRouteMappingPagination(currentPage);
 
   const {data, isLoading} = useQueryGetAllProduct({
     limit: LIMIT,
@@ -149,6 +155,16 @@ const ProductsPage = () => {
       </DashboardContent>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({query}) => {
+  const {page} = query;
+
+  return {
+    props: {
+      initialPage: parseInt(page as string) || 1,
+    },
+  };
 };
 
 export default withMeta(ProductsPage, {title: "Products"});

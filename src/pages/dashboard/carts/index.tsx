@@ -13,9 +13,10 @@ import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
-import useTotalPage from "@/hooks/useTotalPage";
+import {useRouteMappingPagination, useTotalPage} from "@/hooks/core";
 import {formatToCurrency} from "@/utils/core";
 import {routes} from "@/utils/routes";
+import {GetServerSideProps} from "next";
 import Link from "next/link";
 import {useMemo, useState} from "react";
 
@@ -23,8 +24,13 @@ const Loading = () => <ContentLoader height={500} className="mb-6" />;
 
 const LIMIT = 10;
 
-const CartsPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+type Props = {
+  initialPage: number;
+};
+
+const CartsPage = ({initialPage}: Props) => {
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  useRouteMappingPagination(currentPage);
 
   const {data, isLoading} = useQueryGetAllCart({
     limit: LIMIT,
@@ -61,8 +67,8 @@ const CartsPage = () => {
                 <TD>{cart.userId}</TD>
                 <TD>{cart.totalProducts}</TD>
                 <TD>{cart.totalQuantity}</TD>
+                <TD>-{formatToCurrency(cart.total - cart.discountedTotal)}</TD>
                 <TD>{formatToCurrency(cart.discountedTotal)}</TD>
-                <TD>{formatToCurrency(cart.total)}</TD>
                 <TD>
                   <Link href={routes("dashboard/carts/detail", cart.id)}>
                     <Button variant="alternate" size="small">
@@ -83,6 +89,16 @@ const CartsPage = () => {
       </DashboardContent>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({query}) => {
+  const {page} = query;
+
+  return {
+    props: {
+      initialPage: parseInt(page as string) || 1,
+    },
+  };
 };
 
 export default withMeta(CartsPage, {title: "Products"});
