@@ -1,7 +1,6 @@
-import {Constant} from "@/utils/constants";
 import {useCallback, useEffect, useState} from "react";
 
-const useLocalstorage = <T>(key: Constant, fallbackValue?: T) => {
+const useLocalstorage = <T>(key: string, fallbackValue?: T) => {
   const [value, setValue] = useState<T | null>(null);
 
   const readValue = useCallback(() => {
@@ -18,7 +17,7 @@ const useLocalstorage = <T>(key: Constant, fallbackValue?: T) => {
       console.warn("Error reading value key of " + key);
       return null;
     }
-  }, [key]);
+  }, [key, fallbackValue]);
 
   useEffect(
     () => {

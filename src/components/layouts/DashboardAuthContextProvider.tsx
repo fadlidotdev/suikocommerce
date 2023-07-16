@@ -4,6 +4,7 @@ import {createContext, useContext, useEffect} from "react";
 import useLocalstorage from "@/hooks/useLocalstorage";
 import {removeStorage} from "@/utils/storage";
 import {routes} from "@/utils/routes";
+import constants from "@/utils/constants";
 
 const authContext = createContext<{
   accessToken: string | null;
@@ -18,11 +19,13 @@ type Props = {
 };
 
 const DashboardAuthContextProvider = ({children}: Props) => {
-  const accessToken = useLocalstorage<string>("accessToken", "");
+  const accessToken = useLocalstorage<string>(constants("accessToken"), "");
 
   useEffect(() => {
     if (typeof accessToken === "string" && accessToken === "") {
-      Router.replace("/dashboard/login");
+      Router.replace(routes("dashboard/login"));
+    } else {
+      Router.replace(routes("dashboard"));
     }
   }, [accessToken]);
 
