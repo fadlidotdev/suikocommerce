@@ -1,4 +1,11 @@
-export interface Product {
+export type APIGetAllProductResponse = {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+};
+
+export type Product = {
   id: number;
   title: string;
   description: string;
@@ -10,4 +17,6 @@ export interface Product {
   category: string;
   thumbnail: string;
   images: string[];
-}
+};
+
+export type APIGetSingleProductResponse = Product;

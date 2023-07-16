@@ -1,7 +1,7 @@
 import {createPaginationObject} from "@/utils/core";
 import {createHttp} from "@/utils/http";
 import {Paginate} from "../types";
-import {APIGetAllCartResponse} from "./types";
+import {APIGetAllCartResponse, APIGetSingleCartResponse} from "./types";
 
 const http = createHttp({isAuth: true});
 
@@ -16,7 +16,7 @@ const API = {
     });
   },
 
-  getSingle: (id: number) =>
+  getSingle: (id: number): Promise<APIGetSingleCartResponse> =>
     http({
       method: "GET",
       url: `/carts/${id}`,
