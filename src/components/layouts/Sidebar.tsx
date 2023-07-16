@@ -9,6 +9,7 @@ import {Button, Logo} from "../common";
 import NavItem from "./NavItem";
 import {useEffect, useRef} from "react";
 import useWindowSize from "@/hooks/useWindowSize";
+import {useContextAuth} from "./DashboardAuthContextProvider";
 
 type Props = {
   show: boolean;
@@ -18,6 +19,8 @@ type Props = {
 const Sidebar = ({show, onToggle}: Props) => {
   const router = useRouter();
   const {pathname} = router;
+
+  const {logout} = useContextAuth();
 
   const delayedShowSidebar = useDebounce(show, 100);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -33,10 +36,6 @@ const Sidebar = ({show, onToggle}: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [width, show],
   );
-
-  const onLogout = () => {
-    router.push(routes("dashboard/login"));
-  };
 
   return (
     <>
@@ -91,12 +90,12 @@ const Sidebar = ({show, onToggle}: Props) => {
           <Button
             className="hidden w-full md:block"
             variant="alternate"
-            onClick={onLogout}>
+            onClick={logout}>
             Log out
           </Button>
 
           <div className="block md:hidden">
-            <button className="block mx-auto opacity-70" onClick={onLogout}>
+            <button className="block mx-auto opacity-70" onClick={logout}>
               <Image
                 src="/icons/logout.svg"
                 width={20}

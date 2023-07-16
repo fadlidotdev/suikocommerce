@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import DashboardAuthContextProvider from "@/components/misc/DashboardAuthContextProvider";
+import DashboardAuthContextProvider from "@/components/layouts/DashboardAuthContextProvider";
 import "@/styles/globals.css";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import type {AppProps} from "next/app";

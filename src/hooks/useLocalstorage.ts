@@ -1,7 +1,7 @@
 import {Constant} from "@/utils/constants";
 import {useCallback, useEffect, useState} from "react";
 
-const useLocalstorage = <T>(key: Constant) => {
+const useLocalstorage = <T>(key: Constant, fallbackValue?: T) => {
   const [value, setValue] = useState<T | null>(null);
 
   const readValue = useCallback(() => {
@@ -12,7 +12,7 @@ const useLocalstorage = <T>(key: Constant) => {
     try {
       const stored = window.localStorage.getItem(key);
 
-      return stored ? (JSON.parse(stored) as T) : null;
+      return stored ? (JSON.parse(stored) as T) : fallbackValue ?? null;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn("Error reading value key of " + key);

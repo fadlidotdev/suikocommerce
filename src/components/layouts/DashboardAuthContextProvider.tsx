@@ -2,11 +2,15 @@ import Router from "next/router";
 import {createContext, useContext, useEffect} from "react";
 
 import useLocalstorage from "@/hooks/useLocalstorage";
+import {removeStorage} from "@/utils/storage";
+import {routes} from "@/utils/routes";
 
 const authContext = createContext<{
   accessToken: string | null;
+  logout: VoidFunction;
 }>({
   accessToken: null,
+  logout: () => {},
 });
 
 type Props = {
@@ -14,7 +18,7 @@ type Props = {
 };
 
 const DashboardAuthContextProvider = ({children}: Props) => {
-  const accessToken = useLocalstorage<string>("accessToken");
+  const accessToken = useLocalstorage<string>("accessToken", "");
 
   useEffect(() => {
     if (typeof accessToken === "string" && accessToken === "") {
@@ -22,8 +26,13 @@ const DashboardAuthContextProvider = ({children}: Props) => {
     }
   }, [accessToken]);
 
+  const logout = () => {
+    removeStorage("accessToken");
+    Router.replace(routes("dashboard/login"));
+  };
+
   return (
-    <authContext.Provider value={{accessToken}}>
+    <authContext.Provider value={{accessToken, logout}}>
       {children}
     </authContext.Provider>
   );

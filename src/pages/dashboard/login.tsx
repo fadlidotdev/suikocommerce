@@ -1,5 +1,6 @@
 import {useMutationLogin} from "@/api/auth/mutations";
 import {Button, Logo, PasswordField} from "@/components/common";
+import {withMeta} from "@/components/common/Meta/Meta";
 import TextField from "@/components/common/TextField/TextField";
 import {createStorage} from "@/utils/storage";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -87,4 +88,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withMeta(LoginPage, {title: "Login"});
