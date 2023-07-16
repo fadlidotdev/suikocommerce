@@ -1,7 +1,7 @@
-import {createContext, useContext, useEffect, useState} from "react";
 import Router from "next/router";
+import {createContext, useContext, useEffect} from "react";
 
-import {readStorage} from "@/utils/storage";
+import useLocalstorage from "@/hooks/useLocalstorage";
 
 const authContext = createContext<{
   accessToken: string | null;
@@ -14,14 +14,7 @@ type Props = {
 };
 
 const DashboardAuthContextProvider = ({children}: Props) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      const token = readStorage("accessToken");
-      setAccessToken(token || "");
-    } catch (error) {}
-  }, []);
+  const accessToken = useLocalstorage<string>("accessToken");
 
   useEffect(() => {
     if (typeof accessToken === "string" && accessToken === "") {
