@@ -32,10 +32,11 @@ const DashboardAuthContextProvider = ({children}: Props) => {
     if (pathname.includes(routes("dashboard/login"))) {
       Router.replace(routes("dashboard"));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
   const logout = () => {
-    removeStorage("accessToken");
+    removeStorage(constants("accessToken"));
     Router.replace(routes("dashboard/login"));
   };
 

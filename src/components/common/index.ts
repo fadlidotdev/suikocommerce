@@ -8,6 +8,7 @@ export {default as PasswordField} from "./PasswordField";
 export {default as Select} from "./Select";
 export {default as Show} from "./Show";
 export {default as ContentLoader} from "./ContentLoader";
+export {default as GithubCorner} from "./GithubCorner";
 export {default as Table} from "./Table";
 export {default as TextField} from "./TextField";
 export * from "./Table/Table";

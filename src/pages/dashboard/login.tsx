@@ -1,5 +1,5 @@
 import {useMutationLogin} from "@/api/auth";
-import {Button, Logo, PasswordField} from "@/components/common";
+import {Button, Logo, PasswordField, GithubCorner} from "@/components/common";
 import {withMeta} from "@/components/common/Meta/Meta";
 import TextField from "@/components/common/TextField/TextField";
 import constants from "@/utils/constants";
@@ -58,6 +58,8 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center h-screen gap-8 py-8 bg-gray-100 sm:py-0 sm:justify-center">
+      <GithubCorner />
+
       <div className="opacity-60">
         <Logo width={80} height={80} />
       </div>
