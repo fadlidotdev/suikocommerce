@@ -1,10 +1,9 @@
-import Router, {useRouter} from "next/router";
-import {createContext, useContext, useEffect} from "react";
+import Router from "next/router";
+import {createContext, useContext, useEffect, useState} from "react";
 
-import useLocalstorage from "@/hooks/useLocalstorage";
-import {removeStorage} from "@/utils/storage";
-import {routes} from "@/utils/routes";
 import constants from "@/utils/constants";
+import {routes} from "@/utils/routes";
+import {removeStorage} from "@/utils/storage";
 
 const authContext = createContext<{
   accessToken: string | null;
@@ -19,20 +18,29 @@ type Props = {
 };
 
 const DashboardAuthContextProvider = ({children}: Props) => {
-  const accessToken = useLocalstorage<string>(constants("accessToken"), "");
-
-  const {pathname} = useRouter();
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof accessToken === "string" && accessToken === "") {
-      Router.replace(routes("dashboard/login"));
-      return;
-    }
+    if (typeof window === "undefined") return;
 
-    if (pathname.includes(routes("dashboard/login"))) {
-      Router.replace(routes("dashboard"));
+    try {
+      const token = localStorage.getItem(constants("accessToken")) || "";
+      setAccessToken(token);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "Error reading local storage with key of " + constants("accessToken"),
+      );
+      setAccessToken("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (typeof accessToken === "string") {
+      Router.push(
+        accessToken ? routes("dashboard") : routes("dashboard/login"),
+      );
+    }
   }, [accessToken]);
 
   const logout = () => {
