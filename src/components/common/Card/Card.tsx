@@ -9,7 +9,7 @@ const Card = ({children, className, ...otherProps}: Props) => {
   return (
     <div
       className={classes(
-        "w-full px-4 py-3 shadow-md bg-white rounded-lg ",
+        "w-full px-4 py-3 shadow bg-white rounded-lg ",
         className,
       )}
       {...otherProps}>

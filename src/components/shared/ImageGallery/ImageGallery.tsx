@@ -23,7 +23,7 @@ const ImageGallery = ({thumbnail, images}: Props) => {
         alt="Product image"
       />
 
-      <div className="flex gap-3 w-full max-w-[250px] max-h-[250px] overflow-scroll pb-3">
+      <div className="flex gap-3 w-full max-w-[250px] max-h-[250px] overflow-auto pb-3">
         {images.map((imageUrl, idx) => (
           <button
             key={idx}

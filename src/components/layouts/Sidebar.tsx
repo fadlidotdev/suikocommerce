@@ -72,7 +72,7 @@ const Sidebar = ({show, onToggle}: Props) => {
                 href={routes("dashboard/products")}
                 iconSrc="/icons/product-list.svg"
                 label="Products"
-                active={pathname === routes("dashboard/products")}
+                active={pathname.includes(routes("dashboard/products"))}
               />
             </li>
 
@@ -81,7 +81,7 @@ const Sidebar = ({show, onToggle}: Props) => {
                 href={routes("dashboard/carts")}
                 iconSrc="/icons/cart.svg"
                 label="Carts"
-                active={pathname === routes("dashboard/carts")}
+                active={pathname.includes(routes("dashboard/carts"))}
               />
             </li>
           </ul>

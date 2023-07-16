@@ -90,40 +90,43 @@ const CartDetailPage = () => {
       <DashboardHeader title={`Cart Detail ${query.id}`} hasBack />
 
       <DashboardContent>
-        <Card className="max-w-xl mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="flex flex-col py-3">
-              <span className="text-sm text-gray-500">User</span>
-              <span className="font-bold">Nova Julita</span>
-            </div>
-            <div className="flex flex-col py-3">
-              <span className="text-sm text-gray-500">Order date</span>
-              <span className="font-bold">{orderDate}</span>
-            </div>
-            <div className="flex flex-col py-3">
-              <span className="text-sm text-gray-500">Number of products</span>
-              <span className="font-bold">
-                {dummyData.totalProducts} products
-              </span>
-            </div>
-            <div className="flex flex-col py-3">
-              <span className="text-sm text-gray-500">Qty Items</span>
-              <span className="font-bold">{dummyData.totalQuantity} items</span>
-            </div>
-            <div className="flex flex-col py-3">
-              <span className="text-sm text-gray-500">Discount total</span>
-              <span className="font-bold">
-                {formatToCurrency(dummyData.discountedTotal)}
-              </span>
-            </div>
-            <div className="flex flex-col py-3">
-              <span className="text-sm text-gray-500">Grand total</span>
-              <span className="font-bold">
-                {formatToCurrency(dummyData.total)}
-              </span>
-            </div>
-          </div>
-        </Card>
+        <div className="grid grid-cols-2 gap-4 mb-6 md:grid-cols-3">
+          <Card className="flex flex-col py-3">
+            <span className="text-sm text-gray-500">User</span>
+            <span className="font-bold">Nova Julita</span>
+          </Card>
+
+          <Card className="flex flex-col py-3">
+            <span className="text-sm text-gray-500">Order date</span>
+            <span className="font-bold">{orderDate}</span>
+          </Card>
+
+          <Card className="flex flex-col py-3">
+            <span className="text-sm text-gray-500">Number of products</span>
+            <span className="font-bold">
+              {dummyData.totalProducts} products
+            </span>
+          </Card>
+
+          <Card className="flex flex-col py-3">
+            <span className="text-sm text-gray-500">Qty Items</span>
+            <span className="font-bold">{dummyData.totalQuantity} items</span>
+          </Card>
+
+          <Card className="flex flex-col py-3">
+            <span className="text-sm text-gray-500">Discount total</span>
+            <span className="font-bold">
+              {formatToCurrency(dummyData.discountedTotal)}
+            </span>
+          </Card>
+
+          <Card className="flex flex-col py-3">
+            <span className="text-sm text-gray-500">Grand total</span>
+            <span className="font-bold">
+              {formatToCurrency(dummyData.total)}
+            </span>
+          </Card>
+        </div>
 
         <div className="space-y-3">
           <h2 className="text-xl font-bold">Product List</h2>

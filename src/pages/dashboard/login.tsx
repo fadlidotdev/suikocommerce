@@ -1,4 +1,5 @@
 import {Button, Logo} from "@/components/common";
+import TextField from "@/components/common/TextField/TextField";
 import Image from "next/image";
 import Router from "next/router";
 import {ChangeEvent} from "react";
@@ -16,14 +17,14 @@ const LoginPage = () => {
         <Logo width={80} height={80} />
       </div>
 
-      <div className="w-full px-8 py-6 sm:shadow-md sm:bg-white sm:rounded-lg sm:max-w-md">
+      <div className="w-full px-8 py-6 sm:shadow sm:bg-white sm:rounded-lg sm:max-w-md">
         <form onSubmit={onSubmit}>
           <div className="flex flex-col gap-4">
             <div className="space-y-1">
               <label htmlFor="email" className="block mb-2 text-sm font-medium">
                 Email
               </label>
-              <input
+              <TextField
                 type="email"
                 id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -40,10 +41,10 @@ const LoginPage = () => {
                 Pasword
               </label>
               <div className="relative">
-                <input
+                <TextField
                   type="password"
                   id="password"
-                  className="bg-gray-50 pr-10 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="pr-10"
                   placeholder="Enter your password"
                   maxLength={16}
                   required

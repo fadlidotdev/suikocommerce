@@ -1,13 +1,22 @@
 import Link from "next/link";
 import {useMemo, useState} from "react";
 
-import {Button, Pagination, TD, TH, TR, Table} from "@/components/common";
+import {
+  Button,
+  Pagination,
+  Select,
+  TD,
+  TH,
+  TR,
+  Table,
+} from "@/components/common";
 import {withMeta} from "@/components/common/Meta/Meta";
 import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
 import {routes} from "@/utils/routes";
+import TextField from "@/components/common/TextField/TextField";
 
 const dummyData = [
   {
@@ -206,10 +215,83 @@ const ProductsPage = () => {
     [],
   );
 
+  const categories = [
+    "smartphones",
+    "laptops",
+    "fragrances",
+    "skincare",
+    "groceries",
+    "home-decoration",
+    "furniture",
+    "tops",
+    "womens-dresses",
+    "womens-shoes",
+    "mens-shirts",
+    "mens-shoes",
+    "mens-watches",
+    "womens-watches",
+    "womens-bags",
+    "womens-jewellery",
+    "sunglasses",
+    "automotive",
+    "motorcycle",
+    "lighting",
+  ];
+
   return (
     <>
       <DashboardHeader title="Products" />
       <DashboardContent>
+        <div className="mb-6">
+          <div className="flex flex-col gap-3 mb-4">
+            <div className="flex items-center w-full gap-2">
+              <Select divClass="flex-grow" label="Category">
+                <option value="" disabled>
+                  Filter by category
+                </option>
+                {categories.map((category) => (
+                  <option
+                    key={category}
+                    className="capitalize"
+                    value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Select>
+
+              <TextField
+                divClass="flex-grow"
+                label="Brand"
+                type="text"
+                placeholder="Filter by brand"
+              />
+
+              <TextField
+                divClass="flex-grow"
+                label="Price from"
+                type="text"
+                placeholder="Enter price from value"
+              />
+
+              <TextField
+                divClass="flex-grow"
+                label="Price to"
+                type="text"
+                placeholder="Enter price to value"
+              />
+            </div>
+
+            <TextField
+              type="text"
+              placeholder="Search products"
+              className="w-full"
+            />
+          </div>
+
+          <Button className="block ml-auto" variant="alternate">
+            Reset filter
+          </Button>
+        </div>
         <Table columns={columns} className="mb-6">
           {dummyData.map((product) => (
             <TR key={product.id}>
