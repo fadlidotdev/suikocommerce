@@ -4,10 +4,11 @@ import {HTMLProps, forwardRef} from "react";
 interface Props extends HTMLProps<HTMLInputElement> {
   label?: string;
   divClass?: string;
+  error?: string;
 }
 
 const TextField = forwardRef<HTMLInputElement, Props>(
-  ({className, id, label, divClass, ...otherProps}, ref) => {
+  ({className, id, label, divClass, error, ...otherProps}, ref) => {
     return (
       <div className={classes("space-y-1", divClass)}>
         {label ? (
@@ -25,6 +26,8 @@ const TextField = forwardRef<HTMLInputElement, Props>(
           ref={ref}
           {...otherProps}
         />
+
+        {error ? <p className="mt-2 text-xs text-red-600">{error}</p> : null}
       </div>
     );
   },

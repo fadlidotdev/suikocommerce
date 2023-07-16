@@ -1,15 +1,20 @@
 import {useDisclosure} from "@/hooks";
 import {classes} from "@/utils/core";
-import Router from "next/router";
+import Router, {useRouter} from "next/router";
 
 import Sidebar from "./Sidebar";
 import {Show} from "../common";
 import Image from "next/image";
+import {routes} from "@/utils/routes";
 
 type Props = {children: JSX.Element};
 
 const DashboardLayout = ({children}: Props) => {
   const [showSidebar, {onToggle: onToggleSidebar}] = useDisclosure(true);
+
+  const {pathname} = useRouter();
+
+  if (pathname === routes("dashboard/login")) return children;
 
   return (
     <div className="relative flex h-screen bg-gray-100">

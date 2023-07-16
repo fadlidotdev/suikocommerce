@@ -1,8 +1,9 @@
 const constantsObject = {
   appName: "CMS Suicommerce",
+  accessToken: "__accessToken",
 };
 
-type Constant = keyof typeof constantsObject;
+export type Constant = keyof typeof constantsObject;
 
 const constants = (name: Constant) => constantsObject[name];
 

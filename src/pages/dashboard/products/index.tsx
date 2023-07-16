@@ -9,6 +9,7 @@ import {
   TH,
   TR,
   Table,
+  TextField,
 } from "@/components/common";
 import {withMeta} from "@/components/common/Meta/Meta";
 import {
@@ -16,7 +17,6 @@ import {
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
 import {routes} from "@/utils/routes";
-import TextField from "@/components/common/TextField/TextField";
 
 const dummyData = [
   {

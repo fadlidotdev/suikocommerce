@@ -1,14 +1,52 @@
-import {Button, Logo} from "@/components/common";
+import {useMutationLogin} from "@/api/auth/mutations";
+import {Button, Logo, PasswordField} from "@/components/common";
 import TextField from "@/components/common/TextField/TextField";
-import Image from "next/image";
+import {createStorage} from "@/utils/storage";
+import {zodResolver} from "@hookform/resolvers/zod";
 import Router from "next/router";
-import {ChangeEvent} from "react";
+import {useForm} from "react-hook-form";
+import {toast} from "react-hot-toast";
+import {z} from "zod";
+
+const schema = z.object({
+  username: z.string().nonempty("Username is required"),
+  password: z
+    .string()
+    .nonempty("Password is required")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/,
+      "Password must contain at least one lowercase, one uppercase, and one number",
+    ),
+});
+
+type FormData = z.infer<typeof schema>;
 
 const LoginPage = () => {
-  const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+  } = useForm<FormData>({
+    mode: "onChange",
+    resolver: zodResolver(schema),
+  });
 
-    Router.push("/dashboard");
+  const mutationLogin = useMutationLogin();
+
+  const onSubmit = (values: z.infer<typeof schema>) => {
+    toast.promise(
+      mutationLogin.mutateAsync(values, {
+        onSuccess: (data) => {
+          createStorage("accessToken", data.token);
+          Router.push("/dashboard");
+        },
+      }),
+      {
+        loading: "Authenticating...",
+        success: "Yay! Welcome back",
+        error: "Invalid credentials",
+      },
+    );
   };
 
   return (
@@ -18,50 +56,26 @@ const LoginPage = () => {
       </div>
 
       <div className="w-full px-8 py-6 sm:shadow sm:bg-white sm:rounded-lg sm:max-w-md">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4">
-            <div className="space-y-1">
-              <label htmlFor="email" className="block mb-2 text-sm font-medium">
-                Email
-              </label>
-              <TextField
-                type="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Enter your email address"
-                required
-                maxLength={40}
-              />
-            </div>
+            <TextField
+              type="text"
+              id="username"
+              label="Username"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Enter your username"
+              error={errors.username?.message}
+              {...register("username")}
+            />
 
-            <div className="space-y-1">
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium">
-                Pasword
-              </label>
-              <div className="relative">
-                <TextField
-                  type="password"
-                  id="password"
-                  className="pr-10"
-                  placeholder="Enter your password"
-                  maxLength={16}
-                  required
-                />
-                <button type="button" className="absolute top-3 right-2">
-                  <Image
-                    className="opacity-70"
-                    src="/icons/eye-open.svg"
-                    // TODO: Toggle password field
-                    // src="/icons/eye-closed.svg"
-                    width={20}
-                    height={20}
-                    alt="Show password"
-                  />
-                </button>
-              </div>
-            </div>
+            <PasswordField
+              id="password"
+              label="Password"
+              className="pr-10"
+              placeholder="Enter your password"
+              error={errors.password?.message}
+              {...register("password")}
+            />
 
             <div className="mt-2 place-self-end">
               <Button>Log in</Button>
