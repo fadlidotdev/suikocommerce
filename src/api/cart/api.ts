@@ -6,15 +6,12 @@ import {APIGetAllCartResponse, APIGetSingleCartResponse} from "./types";
 const http = createHttp({isAuth: true});
 
 const API = {
-  getAll: (paginate: Paginate): Promise<APIGetAllCartResponse> => {
-    const {limit, page} = paginate;
-
-    return http({
+  getAll: (paginate: Paginate): Promise<APIGetAllCartResponse> =>
+    http({
       method: "GET",
       url: "/carts",
-      params: createPaginationObject(limit, page),
-    });
-  },
+      params: createPaginationObject(paginate.limit, paginate.page),
+    }),
 
   getSingle: (id: number): Promise<APIGetSingleCartResponse> =>
     http({

@@ -1,7 +1,13 @@
 import Link from "next/link";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 
-import {useQueryGetAllProduct} from "@/api/product";
+import {
+  Product,
+  useQueryGetAllProduct,
+  useQueryGetAllProductByCategory,
+  useQueryGetCategories,
+  useQuerySearchProducts,
+} from "@/api/product";
 import {
   Button,
   ContentLoader,
@@ -21,6 +27,9 @@ import {
 import {useRouteMappingPagination, useTotalPage} from "@/hooks/core";
 import {routes} from "@/utils/routes";
 import {GetServerSideProps} from "next";
+import {capitalize} from "@/utils/core";
+import {useDebounce} from "@/hooks";
+import regex from "@/utils/regex";
 
 const Loading = () => <ContentLoader height={500} className="mb-6" />;
 
@@ -31,61 +40,150 @@ type Props = {
 };
 
 const ProductsPage = ({initialPage}: Props) => {
+  const [products, setProducts] = useState<Product[]>([]);
+
   const [currentPage, setCurrentPage] = useState(initialPage);
   useRouteMappingPagination(currentPage);
+  const [search, setSearch] = useState("");
+  const delayedSearch = useDebounce<string>(search, 250);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-  const {data, isLoading} = useQueryGetAllProduct({
-    limit: LIMIT,
-    page: currentPage,
+  const [filter, setFilter] = useState({
+    brand: "",
+    priceFrom: "",
+    priceTo: "",
   });
 
-  const totalPage = useTotalPage(data?.total, LIMIT);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [delayedSearch]);
+
+  useEffect(() => {
+    setSearch("");
+    setCurrentPage(1);
+  }, [selectedCategory]);
+
+  const {data, isLoading, fetchStatus} = useQueryGetAllProduct(
+    {
+      limit: LIMIT,
+      page: currentPage,
+    },
+    {
+      enabled: delayedSearch === "" && selectedCategory === "",
+    },
+  );
+
+  const querySearch = useQuerySearchProducts(
+    delayedSearch,
+    {limit: LIMIT, page: currentPage},
+    {
+      enabled: !!delayedSearch && selectedCategory === "",
+    },
+  );
+
+  const queryAllProductByCategory = useQueryGetAllProductByCategory(
+    selectedCategory,
+    {limit: LIMIT, page: currentPage},
+    {
+      enabled: !!selectedCategory,
+    },
+  );
+
+  useEffect(() => {
+    if (selectedCategory) {
+      setProducts(queryAllProductByCategory.data?.products || []);
+      return;
+    }
+
+    if (delayedSearch) {
+      setProducts(querySearch.data?.products || []);
+    } else {
+      setProducts(data?.products || []);
+    }
+  }, [
+    selectedCategory,
+    delayedSearch,
+    data,
+    queryAllProductByCategory.data,
+    querySearch.data,
+  ]);
+
+  const queryProductCategories = useQueryGetCategories();
+
+  const onResetFilter = () => {
+    setSearch("");
+    setSelectedCategory("");
+    setFilter({
+      brand: "",
+      priceFrom: "",
+      priceTo: "",
+    });
+  };
+
+  const totalPage = useTotalPage(
+    // eslint-disable-next-line no-nested-ternary
+    selectedCategory
+      ? queryAllProductByCategory.data?.total
+      : delayedSearch
+      ? querySearch.data?.total
+      : data?.total,
+    LIMIT,
+  );
 
   const columns = useMemo(
     () => ["Name", "Brand", "Category", "Price", "Stock", "Action"],
     [],
   );
 
-  const categories = [
-    "smartphones",
-    "laptops",
-    "fragrances",
-    "skincare",
-    "groceries",
-    "home-decoration",
-    "furniture",
-    "tops",
-    "womens-dresses",
-    "womens-shoes",
-    "mens-shirts",
-    "mens-shoes",
-    "mens-watches",
-    "womens-watches",
-    "womens-bags",
-    "womens-jewellery",
-    "sunglasses",
-    "automotive",
-    "motorcycle",
-    "lighting",
-  ];
+  const loading =
+    (isLoading && fetchStatus === "fetching") ||
+    (querySearch.isLoading && querySearch.fetchStatus === "fetching") ||
+    (queryAllProductByCategory.isLoading &&
+      queryAllProductByCategory.fetchStatus === "fetching");
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const includedBrand = product.brand
+        .toLowerCase()
+        .includes(filter.brand.toLowerCase());
+      const includedPriceFrom = product.price >= Number(filter.priceFrom ?? 0);
+      const includedPriceTo =
+        filter.priceTo !== ""
+          ? product.price <= Number(filter.priceTo ?? 0)
+          : true;
+
+      const includedSearch = selectedCategory
+        ? product.title.toLowerCase().includes(search.toLowerCase())
+        : true;
+
+      return (
+        includedBrand && includedPriceFrom && includedPriceTo && includedSearch
+      );
+    });
+  }, [filter, products, search, selectedCategory]);
 
   return (
     <>
       <DashboardHeader title="Products" />
+
       <DashboardContent>
         <div className="mb-6">
           <div className="flex flex-col gap-3 mb-4">
             <div className="flex items-center w-full gap-2">
-              <Select divClass="flex-grow" label="Category">
+              <Select
+                divClass="flex-grow"
+                label="Category"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}>
                 <option value="" disabled>
                   Filter by category
                 </option>
-                {categories.map((category) => (
+                {queryProductCategories.data?.map((category) => (
                   <option
                     key={category}
                     className="capitalize"
                     value={category}>
-                    {category}
+                    {capitalize(category)}
                   </option>
                 ))}
               </Select>
@@ -95,6 +193,10 @@ const ProductsPage = ({initialPage}: Props) => {
                 label="Brand"
                 type="text"
                 placeholder="Filter by brand"
+                value={filter.brand}
+                onChange={(e) =>
+                  setFilter((prev) => ({...prev, brand: e.target.value}))
+                }
               />
 
               <TextField
@@ -102,6 +204,13 @@ const ProductsPage = ({initialPage}: Props) => {
                 label="Price from"
                 type="text"
                 placeholder="Enter price from value"
+                value={filter.priceFrom}
+                onChange={(e) => {
+                  const {value} = e.target;
+
+                  if (regex.numeric.test(value) || value === "")
+                    setFilter((prev) => ({...prev, priceFrom: e.target.value}));
+                }}
               />
 
               <TextField
@@ -109,6 +218,13 @@ const ProductsPage = ({initialPage}: Props) => {
                 label="Price to"
                 type="text"
                 placeholder="Enter price to value"
+                value={filter.priceTo}
+                onChange={(e) => {
+                  const {value} = e.target;
+
+                  if (regex.numeric.test(value) || value === "")
+                    setFilter((prev) => ({...prev, priceTo: e.target.value}));
+                }}
               />
             </div>
 
@@ -116,19 +232,27 @@ const ProductsPage = ({initialPage}: Props) => {
               type="text"
               placeholder="Search products"
               className="w-full"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          <Button className="block ml-auto" variant="alternate">
-            Reset filter
-          </Button>
+          <div className="flex justify-between">
+            <p className="max-w-xs text-sm italic text-gray-500 sm:max-w-2xl">
+              Filter brand, price from, price to only applied for local data
+            </p>
+
+            <Button variant="alternate" onClick={onResetFilter}>
+              Reset filter
+            </Button>
+          </div>
         </div>
 
-        {isLoading ? (
+        {loading ? (
           <Loading />
         ) : (
           <Table columns={columns} className="mb-6">
-            {data?.products.map((product) => (
+            {filteredProducts.map((product) => (
               <TR key={product.id}>
                 <TH>{product.title}</TH>
                 <TD>{product.brand}</TD>
@@ -136,7 +260,7 @@ const ProductsPage = ({initialPage}: Props) => {
                 <TD>${product.price}</TD>
                 <TD>{product.stock}</TD>
                 <TD>
-                  <Link href={routes("dashboard/products/detail", 1)}>
+                  <Link href={routes("dashboard/products/detail", product.id)}>
                     <Button variant="alternate" size="small">
                       Detail
                     </Button>

@@ -11,6 +11,7 @@ import {formatToCurrency} from "@/utils/core";
 import Link from "next/link";
 import {routes} from "@/utils/routes";
 import {useQueryGetSingleCart} from "@/api/cart";
+import {useQueryGetSingleUser} from "@/api/users/queries";
 
 type SummaryCardProps = {
   title: string;
@@ -35,6 +36,10 @@ const CartDetailPage = () => {
     enabled: !!query.id,
   });
 
+  const queryUser = useQueryGetSingleUser(data?.userId, {
+    enabled: !!data?.userId,
+  });
+
   const orderDate = useMemo(() => format(new Date(), "MM/dd/yyyy"), []);
 
   const columns = useMemo(
@@ -57,9 +62,9 @@ const CartDetailPage = () => {
       <DashboardContent>
         <div className="grid grid-cols-2 gap-4 mb-6 md:grid-cols-3">
           <SummaryCard
-            loading={isLoading}
+            loading={isLoading || queryUser.isLoading}
             title="User"
-            description={data?.userId}
+            description={`${queryUser.data?.firstName} ${queryUser.data?.lastName}`}
           />
 
           <SummaryCard

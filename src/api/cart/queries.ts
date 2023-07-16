@@ -17,7 +17,7 @@ export const useQueryGetSingleCart = (
   options?: QueryOptions<APIGetSingleCartResponse>,
 ) => {
   return useQuery({
-    queryKey: ["carts", id],
+    queryKey: [...queryKeysCart, id],
     queryFn: () => API.getSingle(id as number),
     ...options,
   });

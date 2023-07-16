@@ -3,6 +3,7 @@ import {Button, Logo, PasswordField} from "@/components/common";
 import {withMeta} from "@/components/common/Meta/Meta";
 import TextField from "@/components/common/TextField/TextField";
 import constants from "@/utils/constants";
+import regex from "@/utils/regex";
 import {createStorage} from "@/utils/storage";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Router from "next/router";
@@ -16,7 +17,7 @@ const schema = z.object({
     .string()
     .nonempty("Password is required")
     .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/,
+      regex.password,
       "Password must contain at least one lowercase, one uppercase, and one number",
     ),
 });

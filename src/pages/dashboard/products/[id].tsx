@@ -1,98 +1,51 @@
-import {Meta} from "@/components/common";
+import {useQueryGetSingleProduct} from "@/api/product";
+import {ContentLoader, Meta, TextField} from "@/components/common";
 import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
 import {ImageGallery} from "@/components/shared";
+import {capitalize} from "@/utils/core";
+import {useRouter} from "next/router";
 
 const ProductDetailPage = () => {
+  const {query} = useRouter();
+
+  const {data, isLoading} = useQueryGetSingleProduct(
+    Number(query.id as string),
+    {
+      enabled: !!query.id,
+    },
+  );
+
   return (
     <>
-      <Meta title="Microsoft Surface Laptop 4" />
+      <Meta title={data?.title} />
 
-      <DashboardHeader title="Microsoft Surface Laptop 4" hasBack />
+      <DashboardHeader title={data?.title ?? ""} hasBack />
 
       <DashboardContent>
         <div className="md:flex md:gap-8">
           <form className="w-full max-w-lg mb-4 space-y-4">
-            <div className="space-y-1">
-              <label htmlFor="name" className="block mb-2 text-sm font-medium">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Enter product name"
-                value="Microsoft Surface Laptop 4"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="name" className="block mb-2 text-sm font-medium">
-                Brand
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Enter brand name"
-                value="Microsoft"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="name" className="block mb-2 text-sm font-medium">
-                Category
-              </label>
-              <select
-                id="category"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option disabled>Select category</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
-              </select>
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="name" className="block mb-2 text-sm font-medium">
-                Price
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Enter price value"
-                value="234"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="name" className="block mb-2 text-sm font-medium">
-                Stock
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Enter stock value"
-                value="10"
-              />
-            </div>
+            <TextField readOnly label="Name" defaultValue={data?.title} />
+            <TextField readOnly label="Brand" defaultValue={data?.brand} />
+            <TextField
+              readOnly
+              label="Category"
+              defaultValue={capitalize(data?.category)}
+            />
+            <TextField readOnly label="Price" defaultValue={data?.price} />
+            <TextField readOnly label="Stock" defaultValue={data?.stock} />
           </form>
 
-          <ImageGallery
-            thumbnail="https://i.dummyjson.com/data/products/8/thumbnail.jpg"
-            images={[
-              "https://i.dummyjson.com/data/products/8/1.jpg",
-              "https://i.dummyjson.com/data/products/8/2.jpg",
-              "https://i.dummyjson.com/data/products/8/3.jpg",
-              "https://i.dummyjson.com/data/products/8/4.jpg",
-              "https://i.dummyjson.com/data/products/8/thumbnail.jpg",
-            ]}
-          />
+          {isLoading ? (
+            <ContentLoader height={300} width={250} />
+          ) : (
+            <ImageGallery
+              thumbnail={data?.thumbnail || ""}
+              images={data?.images || []}
+            />
+          )}
         </div>
       </DashboardContent>
     </>

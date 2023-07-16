@@ -13,3 +13,6 @@ export const createPaginationObject = (limit: number, page: number) => ({
   skip: limit * (page - 1),
   limit,
 });
+
+export const capitalize = (value: string | undefined) =>
+  !value ? "" : `${value[0].toUpperCase()}${value.slice(1)}`;

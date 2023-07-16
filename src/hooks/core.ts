@@ -36,7 +36,7 @@ export const useTotalPage = (countItems: number | undefined, limit: number) => {
 
   useEffect(
     () => {
-      if (!countItems || totalPage !== 0) return;
+      if (!countItems) return;
 
       setTotalPage(Math.floor(countItems / limit));
     },

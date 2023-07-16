@@ -1,7 +1,7 @@
 import {classes} from "@/utils/core";
-import {HTMLProps, forwardRef} from "react";
+import {InputHTMLAttributes, forwardRef} from "react";
 
-interface Props extends HTMLProps<HTMLInputElement> {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   divClass?: string;
   error?: string;

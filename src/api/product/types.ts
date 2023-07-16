@@ -20,3 +20,5 @@ export type Product = {
 };
 
 export type APIGetSingleProductResponse = Product;
+
+export type APIGetProductCategoriesResponse = string[];
