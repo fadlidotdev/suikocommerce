@@ -3,7 +3,7 @@ import {APILoginParams} from "./types";
 
 const http = createHttp({isAuth: true});
 
-const AuthAPI = {
+const API = {
   login: async (params: APILoginParams) =>
     http({
       method: "POST",
@@ -12,4 +12,4 @@ const AuthAPI = {
     }),
 };
 
-export default AuthAPI;
+export default API;

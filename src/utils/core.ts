@@ -8,3 +8,8 @@ export const formatToCurrency = (value: number) =>
     currency: "USD",
     style: "currency",
   }).format(value);
+
+export const createPaginationObject = (limit: number, page: number) => ({
+  skip: limit * (page - 1),
+  limit,
+});

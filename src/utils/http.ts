@@ -56,7 +56,8 @@ const apiResolver = async (
     return res.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    const message = err.response.data.message || "Something went wrong";
+    console.log("err", err);
+    const message = err.response?.data?.message || "Something went wrong";
     throw message;
   }
 };

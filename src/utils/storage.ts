@@ -1,6 +1,4 @@
-import {Constant} from "./constants";
-
-export const createStorage = (key: Constant, value: string) =>
+export const createStorage = (key: string, value: string) =>
   localStorage.setItem(key, value);
 
-export const removeStorage = (key: Constant) => localStorage.removeItem(key);
+export const removeStorage = (key: string) => localStorage.removeItem(key);

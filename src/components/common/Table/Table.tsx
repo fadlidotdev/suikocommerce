@@ -27,7 +27,7 @@ export const TD = ({children, className}: TDProps) => (
 
 type Props = {
   columns: string[];
-  children: JSX.Element[];
+  children: JSX.Element[] | ReactNode;
   className?: string;
 };
 

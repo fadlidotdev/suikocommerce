@@ -1,7 +1,8 @@
-import {useMutationLogin} from "@/api/auth/mutations";
+import {useMutationLogin} from "@/api/auth";
 import {Button, Logo, PasswordField} from "@/components/common";
 import {withMeta} from "@/components/common/Meta/Meta";
 import TextField from "@/components/common/TextField/TextField";
+import constants from "@/utils/constants";
 import {createStorage} from "@/utils/storage";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Router from "next/router";
@@ -30,6 +31,10 @@ const LoginPage = () => {
   } = useForm<FormData>({
     mode: "onChange",
     resolver: zodResolver(schema),
+    defaultValues: {
+      username: "kminchelle",
+      password: "0lelplR",
+    },
   });
 
   const mutationLogin = useMutationLogin();
@@ -38,7 +43,7 @@ const LoginPage = () => {
     toast.promise(
       mutationLogin.mutateAsync(values, {
         onSuccess: (data) => {
-          createStorage("accessToken", data.token);
+          createStorage(constants("accessToken") as string, data.token);
           Router.push("/dashboard");
         },
       }),
