@@ -1,5 +1,5 @@
 const constantsObject = {
-  appName: "CMS Suicommerce",
+  appName: "CMS Suikocommerce",
   accessToken: "__accessToken",
 };
 

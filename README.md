@@ -1,4 +1,4 @@
-# Suicommerce
+# Suikocommerce
 
 🔥 This project is built using **Next.js + TypeScript + Tailwind CSS + Tanstack Query**
 

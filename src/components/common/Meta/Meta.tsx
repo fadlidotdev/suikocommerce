@@ -12,6 +12,9 @@ const Meta = ({title}: Props) => {
   return (
     <Head>
       <title>{title ? `${title} - ${appName}` : appName}</title>
+      <meta
+        name="description"
+        content="Suikocommerce is a powerful CMS designed specifically for ecommerce management. It provides a comprehensive set of features and tools to efficiently manage and operate an online store. With Suikocommerce, you can easily handle product catalog management, inventory tracking, order processing, customer management, and much more. Streamline your ecommerce operations with Suikocommerce today!"></meta>
     </Head>
   );
 };

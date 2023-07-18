@@ -8,7 +8,9 @@ const DashboardPage = () => {
         <Logo width={100} height={100} className="opacity-60" />
 
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold drop-shadow-lg">CMS Suicommerce</h1>
+          <h1 className="text-2xl font-bold drop-shadow-lg">
+            CMS Suikocommerce
+          </h1>
           <span className="text-gray-500">Smart. Beautiful. Ecommerce.</span>
         </div>
       </div>
