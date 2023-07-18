@@ -9,6 +9,7 @@ const Logo = ({width = 24, height = 24, className = ""}) => (
     width={width}
     height={height}
     alt="Company logo"
+    priority
   />
 );
 
